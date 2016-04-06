@@ -10,7 +10,7 @@ from scipy.integrate import quad
 from scipy.integrate import odeint
 '''continuous spray dryer
 assumptions: 
-1.diameter of particle remains same, water loss from crust similar to drying of polymer beads
+1.water loss occurs from crust without disturbing shape similar to drying of polymer beads
 2.temperature of solid and water in slurry at any point x remains same Ts=Tw in slurry phase 
 3. only water transfer occurs in between two phases and solid is not getting carried with air 
 or vice versa there is no air entrainment in slurry '''
