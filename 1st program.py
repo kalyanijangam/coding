@@ -99,8 +99,8 @@ while (Va>=ut):
     Sh=2+0.6*(Rep**0.5)*(Sc**0.33)
     ky=(18*RhoA*Dv*Sh)/(28.87*p*dp*1e-06)
     return Va,D0
-D0=D0+D0*0.2 #oversizing 20%
-print 'diameter of spray dryer=', D0
+Ds=D0+D0*0.2 #oversizing 20%
+print 'diameter of spray dryer=', Ds
 
 
 
