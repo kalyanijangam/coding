@@ -44,6 +44,7 @@ H=10                    #m height of spray dryer
 D0=2                    #m initial assumption for finding the diameter of spray dryer
 lmb=2258                #kJ/kg-1 latenet heat of vapourization
 MuA=1.983e-05
+Ka=0.024                #thermal conductivity of air W/m K
 p=1.01325               #bar
 '''log10(P) = A − (B / (T + C))
     P = vapor pressure (bar)
@@ -61,15 +62,16 @@ Rep=(RhoA*dp*1e-06*Va)/MuA
 Sc=MuA/(RhoA*Dv)
 Sh=2+0.6*(Rep**0.5)*(Sc**0.33)
 ky=(18*RhoA*Dv*Sh)/(28.87*p*dp*1e-06) #gas side mass transfer coeff of water in air 
-U=100
+Pr=Cpa*MuA/Ka
+h=(Ka/D0)*(2+0.6*(Rep**0.5)*(Pr**0.33)) #heat transfer coefficient calculation
 #defining array k=[Tair,Tslurry,CwAIR,CwSLURRY] CwAIR CwSLURRY expressed in moles
 def dry(k,x):
      
     Psat=10**((3.55959)-(643.748/(k[0]-198.043)))
     ky=150
     a=1
-    dTa =-(P*U*(k[0]-k[1]))/(air*Cpa)
-    dTw =-(P*U*(k[0]-k[1]))/(k[3]*Cpw)-(ky*a*A*(Psat-(k[2]/(k[2]+amol)*p))*lmb)
+    dTa =-(P*h*(k[0]-k[1]))/(air*Cpa)
+    dTw =-(P*h*(k[0]-k[1]))/(k[3]*Cpw)-(ky*a*A*(Psat-(k[2]/(k[2]+amol)*p))*lmb)
     dMa = ky*a*A*(Psat-(k[2]/(k[2]+amol)*p))
     dMw = -dMa
     #    dTs=-(P*U*(T[0]-T[1]))/(s*Cps)
@@ -98,9 +100,12 @@ while (Va>=ut):
     Sc=MuA/(RhoA*Dv)
     Sh=2+0.6*(Rep**0.5)*(Sc**0.33)
     ky=(18*RhoA*Dv*Sh)/(28.87*p*dp*1e-06)
+    Pr=Cpa*MuA/Ka
+    h=(Ka/D0)*(2+0.6*(Rep**0.5)*(Pr**0.33)) #heat transfer coefficient calculation
     return Va,D0
-Ds=D0+D0*0.2 #oversizing 20%
+Ds=D0+D0*0.4 #oversizing 20%
 print 'diameter of spray dryer=', Ds
+print 'for height of ' ,H
 
 
 
